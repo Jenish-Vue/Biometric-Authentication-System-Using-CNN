@@ -5,15 +5,15 @@ This project implements a Fingerprint Authentication System for lab access using
 
 ## Features
 
-    1. Fingerprint Authentication:  
+1. Fingerprint Authentication:  
      The system can verify whether a fingerprint is authorized and identify the individual.
-    2. Binary Classification: 
+2. Binary Classification: 
       The CNN model classifies the fingerprint images as "same" or "different" for authentication purposes.
-   3.  Frontend Interface:
+3.  Frontend Interface:
       A simple HTML/CSS frontend is used to capture the fingerprint image, which is then sent to the backend for comparison.
-    4. Backend Integration:
+4. Backend Integration:
       Flask is used for handling backend requests, image processing, and matching the fingerprint against the authorized database.
-    5.Identification and Access Control:
+5.Identification and Access Control:
        The system identifies the person if the fingerprint matches and grants access accordingly.
 
 ## Dataset
