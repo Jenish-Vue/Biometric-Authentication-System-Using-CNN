@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Fingerprint</title>
+    <style>
+        .upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .upload-container input {
+            font-size: 16px;
+            padding: 10px;
+        }
+
+        .upload-container button {
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .upload-container button:hover {
+            background-color: #45a049;
+        }
+
+        .message {
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h1>Upload Your Fingerprint</h1>
+        <input type="file" id="fileInput" accept=".bmp">
+        <button id="uploadBtn">Upload Fingerprint</button>
+        <p class="message" id="uploadMessage"></p>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const fileInput = document.getElementById("fileInput");
+            const uploadBtn = document.getElementById("uploadBtn");
+            const uploadMessage = document.getElementById("uploadMessage");
+
+            let selectedFile = null;
+
+            fileInput.addEventListener("change", (event) => {
+                const file = event.target.files[0];
+                if (file && file.type === "image/bmp") {
+                    selectedFile = file;
+                    uploadMessage.textContent = "";
+                } else {
+                    uploadMessage.textContent = "Only .bmp files are allowed.";
+                    selectedFile = null;
+                }
+            });
+
+            uploadBtn.addEventListener("click", async () => {
+                if (!selectedFile) {
+                    uploadMessage.textContent = "Please select a valid .bmp fingerprint file.";
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append("file", selectedFile);
+
+                try {
+                    const response = await fetch("http://localhost:5000/upload", {
+                        method: "POST",
+                        body: formData,
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        uploadMessage.textContent = result.message;
+                    } else {
+                        uploadMessage.textContent = "Failed to upload file. Please try again.";
+                    }
+                } catch (error) {
+                    uploadMessage.textContent = "Failed to upload file. Please try again.";
+                    console.error(error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
